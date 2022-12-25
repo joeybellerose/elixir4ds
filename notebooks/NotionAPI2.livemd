@@ -1,0 +1,411 @@
+# Notion API
+
+```elixir
+Mix.install([
+  {:httpoison, "~> 1.8"},
+  {:jason, "~> 1.4"}
+])
+```
+
+## Setup
+
+```elixir
+notion_api_key = System.get_env("NOTION_API_SECRET")
+blog_db_id = System.get_env("NOTION_BLOG_DB_ID")
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## Working With Databases
+
+### Get a Response From A Database
+
+```elixir
+HTTPoison.get(
+  "https://api.notion.com/v1/databases/#{blog_db_id}",
+  [
+    {"Notion-Version", "2022-06-28"},
+    {"Authorization", "Bearer #{notion_api_key}"},
+    {"Content-Type", "application/json"}
+  ]
+)
+```
+
+### Get A List of All Items (Pages) In the Database
+
+```elixir
+query =
+  %{
+    filter: %{
+      property: "Status",
+      select: %{
+        equals: "Published"
+      }
+    }
+  }
+  |> Jason.encode!()
+```
+
+```elixir
+db_res =
+  HTTPoison.post!(
+    "https://api.notion.com/v1/databases/#{blog_db_id}/query",
+    query,
+    [
+      {"Notion-Version", "2022-06-28"},
+      {"Authorization", "Bearer #{notion_api_key}"},
+      {"Content-Type", "application/json"}
+    ]
+  )
+```
+
+Extract data needed for creating each blog card
+
+```elixir
+db_res
+|> Map.fetch!(:body)
+|> Jason.decode!()
+|> Map.fetch!("results")
+```
+
+```elixir
+db_res
+|> Map.fetch!(:body)
+|> Jason.decode!()
+|> Map.fetch!("results")
+|> Enum.map(fn x ->
+  title =
+    x["properties"]["Title"]["title"]
+    |> Enum.map(fn y ->
+      y["text"]["content"]
+    end)
+    |> List.first()
+
+  cover_image = x["properties"]["CoverImage"]["url"]
+
+  authors =
+    x["properties"]["Authors"]["multi_select"]
+    |> Enum.map(fn y ->
+      y["name"]
+    end)
+
+  tags =
+    x["properties"]["Tags"]["multi_select"]
+    |> Enum.map(fn y ->
+      y["name"]
+    end)
+
+  description =
+    x["properties"]["Description"]["rich_text"]
+    |> Enum.reduce("", fn y, acc ->
+      acc <> y["plain_text"]
+    end)
+
+  slug = x["properties"]["Slug"]["formula"]["string"]
+
+  page_id = x["id"]
+
+  %{
+    title: title,
+    description: description,
+    cover_image: cover_image,
+    authors: authors,
+    tags: tags,
+    slug: slug,
+    page_id: page_id
+  }
+end)
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## Get a Specific Page Based on Selected Slug
+
+```elixir
+query =
+  %{
+    filter: %{
+      property: "Slug",
+      rich_text: %{
+        equals: "TestWebPage-2022-11-18"
+      }
+    }
+  }
+  |> Jason.encode!()
+```
+
+```elixir
+db_res =
+  HTTPoison.post!(
+    "https://api.notion.com/v1/databases/#{blog_db_id}/query",
+    query,
+    [
+      {"Notion-Version", "2022-06-28"},
+      {"Authorization", "Bearer #{notion_api_key}"},
+      {"Content-Type", "application/json"}
+    ]
+  )
+```
+
+### Get Page ID from Slug request
+
+```elixir
+page_id =
+  db_res
+  |> Map.fetch!(:body)
+  |> Jason.decode!()
+  |> Map.fetch!("results")
+  |> Enum.reduce("", fn x, acc ->
+    acc <> x["id"]
+  end)
+```
+
+```elixir
+test = %{
+  "id" => "P%3BJN",
+  "rich_text" => [
+    %{
+      "annotations" => %{
+        "bold" => false,
+        "code" => false,
+        "color" => "default",
+        "italic" => false,
+        "strikethrough" => false,
+        "underline" => false
+      },
+      "href" => nil,
+      "plain_text" => "yBFdWUfbG5DngsfpVGTVPMVb",
+      "text" => %{"content" => "yBFdWUfbG5DngsfpVGTVPMVb", "link" => nil},
+      "type" => "text"
+    }
+  ],
+  "type" => "rich_text"
+}
+
+test["rich_text"] |> List.first() |> Map.fetch!("plain_text")
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## Working With Pages in a Database
+
+```elixir
+page_id = "7a7bf180-6810-4009-b509-e51f851c496d"
+
+page_res =
+  HTTPoison.get!(
+    "https://api.notion.com/v1/pages/#{page_id}",
+    [
+      {"Notion-Version", "2022-06-28"},
+      {"Authorization", "Bearer #{notion_api_key}"},
+      {"Content-Type", "application/json"}
+    ]
+  )
+```
+
+Extract body from page response
+
+```elixir
+# {:ok, %HTTPoison.Response{body: page_body}} = page_res
+```
+
+```elixir
+page_res
+|> Map.fetch!(:body)
+|> Jason.decode!()
+```
+
+<!-- livebook:{"branch_parent_index":0} -->
+
+## Working With Blocks
+
+```elixir
+# "7a7bf180-6810-4009-b509-e51f851c496d"
+block_id = "07783159-0c13-4cab-a345-c23a242bcd5a"
+
+block_res =
+  HTTPoison.get!(
+    "https://api.notion.com/v1/blocks/#{block_id}/children?page_size=100",
+    [
+      {"Notion-Version", "2022-06-28"},
+      {"Authorization", "Bearer #{notion_api_key}"},
+      {"Content-Type", "application/json"}
+    ]
+  )
+```
+
+```elixir
+defmodule Notion do
+  def convert_result_to_json(result) do
+    result
+    |> Map.fetch!(:body)
+    |> Jason.decode!()
+  end
+
+  def get_results(json) do
+    json |> Map.fetch!("results")
+  end
+
+  def iterate_blocks(results) do
+    results
+    |> Enum.reduce([], fn x, acc ->
+      count = Enum.count(acc)
+      type = x["type"]
+
+      group =
+        cond do
+          acc == [] ->
+            count
+
+          String.contains?(type, "list_item") && type == acc |> List.first() |> Map.fetch!(:type) ->
+            acc |> List.first() |> Map.fetch!(:group)
+
+          true ->
+            count
+        end
+
+      html =
+        type
+        |> handle_type(x)
+
+      [%{type: type, html: html, count: count, group: group} | acc]
+    end)
+  end
+
+  def handle_type("image", content) do
+    image_url = content["image"]["file"]["url"]
+
+    "<img src='" <> image_url <> "'>"
+  end
+
+  def handle_type("video", content) do
+    video_url = content["video"]["file"]["url"]
+
+    "<video width=" <>
+      "600" <>
+      " controls autoplay>" <>
+      "<source src='" <>
+      video_url <>
+      "' type=" <>
+      "video/mp4" <>
+      "></video>"
+  end
+
+  def handle_type(type, content) do
+    content[type]["rich_text"]
+    |> Enum.reduce("", fn x, acc ->
+      href = x["href"]
+
+      text = ~s"<span>#{x["plain_text"]}</span>"
+
+      html = handle_link(href, text)
+
+      acc <> html
+    end)
+  end
+
+  def handle_link(nil, text), do: text
+
+  def handle_link(href, text) do
+    "<a class=" <>
+      "'text-blue-400'" <>
+      " target=" <>
+      "'_blank'" <>
+      " href=" <> "'" <> href <> "'>" <> text <> "</a>"
+  end
+end
+```
+
+```elixir
+block_res
+|> Notion.convert_result_to_json()
+|> Notion.get_results()
+|> Notion.iterate_blocks()
+|> Enum.reverse()
+|> Enum.group_by(&[&1[:group], &1[:type]])
+|> Enum.into([])
+|> Enum.sort_by(&{[&1]}, :asc)
+```
+
+```elixir
+block_res
+|> Notion.convert_result_to_json()
+|> Notion.get_results()
+|> Enum.reduce([], fn x, acc ->
+  count = Enum.count(acc)
+
+  type = x["type"]
+
+  id =
+    cond do
+      acc == [] ->
+        count
+
+      String.contains?(type, "list_item") && type == acc |> List.first() |> Map.fetch!(:type) ->
+        acc |> List.first() |> Map.fetch!(:id)
+
+      true ->
+        count
+    end
+
+  content = x[type]
+
+  [%{id: id, count: count, type: type, content: content} | acc]
+end)
+|> Enum.reverse()
+|> Enum.group_by(&[&1[:id], &1[:type]])
+
+# |> Enum.into([])
+```
+
+```elixir
+
+  # previous_count = 
+  #   cond do
+  #     acc == [] -> 0
+  #     true -> acc |> List.first() |> Map.fetch!(:count)  #|> Map.fetch!(:count)
+  #   end
+
+  # previous_count |> dbg
+    
+
+  # total = count + previous_count
+    # cond do
+    #   acc == [] -> count
+    #   id == acc |> List.first() |> Map.fetch!(:id) -> count + acc |> List.first() |> Map.fetch!(:count)
+    #   true -> count
+    # end
+
+# |> Enum.reduce(fn x, acc -> 
+  
+#   # total = x |> Enum.reduce(fn y, acb -> y[:count] + acb end)
+# end)
+
+# section = 
+  #   cond do
+  #     acc == [] -> "full_block"
+  #     # type == "numbered_list_item" -> "list_block"
+  #     type == acc |> List.first() |> Map.fetch!(:type) -> "list_block"
+  #     true -> "full_block"
+  #   end
+
+annotations = x[type]["rich_text"]
+  |> Enum.map(fn y -> y["annotations"] end)
+  link = x[type]["rich_text"]
+  |> Enum.map(fn y -> y["href"] end)
+  text = x[type]["rich_text"]
+  |> Enum.map(fn y -> 
+    y["plain_text"] 
+    |> String.replace("\n", "<br>") 
+  end)
+  [%{type: type, link: link, text: text} | acc]
+end)
+|> Enum.reverse()
+# |> Enum.map(fn x -> 
+#   type = x["type"]
+#   x[type]["rich_text"]
+#   |> Enum.map(fn y -> 
+#     y["annotations"]
+#   end)
+# end)
+```

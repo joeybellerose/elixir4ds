@@ -1,0 +1,60 @@
+<%= for content <- block do %>
+          <%= case content[:type] do %>
+
+
+            <% "code" -> %>
+              <code>
+                <%= for item <- content[:content]["rich_text"] do %>
+                  <%= if is_nil(item["href"]) do %>
+                    <%= item["plain_text"] %>
+                  <% else %>
+                  <a class="text-blue-400" target="_blank" href={item["href"]}>
+                    <%= item["plain_text"] %>
+                  </a>
+                  <% end %>
+                <% end %>
+              </code>
+
+          <% "bulleted_list_item" -> %>
+            <ul>
+              <%= for item <- content[:content]["rich_text"] do %>
+                <li>
+                  <%= if is_nil(item["href"]) do %>
+                    <%= item["plain_text"] %>
+                  <% else %>
+                  <a class="text-blue-400" target="_blank" href={item["href"]}>
+                    <%= item["plain_text"] %>
+                  </a>
+                  <% end %>
+                </li>
+              <% end %>
+            </ul>
+
+            <% "numbered_list_item" -> %>
+            <ol>
+              <%= for item <- content[:content]["rich_text"] do %>
+                <li>
+                  <%= if is_nil(item["href"]) do %>
+                    <%= item["plain_text"] %>
+                  <% else %>
+                  <a class="text-blue-400" target="_blank" href={item["href"]}>
+                    <%= item["plain_text"] %>
+                  </a>
+                  <% end %>
+                </li>
+              <% end %>
+            </ol>
+            <% true -> %>
+              <.p>
+                <%= for item <- content[:content]["rich_text"] do %>
+                  <%= if is_nil(item["href"]) do %>
+                    <%= item["plain_text"] %>
+                  <% else %>
+                  <a class="text-blue-400" target="_blank" href={item["href"]}>
+                    <%= item["plain_text"] %>
+                  </a>
+                  <% end %>
+                <% end %>
+              </.p>
+          <% end %>
+        <% end %>
