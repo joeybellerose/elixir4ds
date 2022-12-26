@@ -88,4 +88,4 @@ RUN mix release
 
 # USER nobody
 
-CMD ["/_build/dev/rel/elixir4ds/bin/elixir4ds", "start"]
+CMD ["/app/_build/dev/rel/elixir4ds/bin/elixir4ds", "start"]
