@@ -19,7 +19,7 @@ EXPOSE 4000
 ENV MIX_ENV=prod
 ENV PORT=4000
 
-RUN mix deps.get
+RUN mix deps.get --only prod
 RUN mix deps.compile
 RUN mix compile
 RUN mix phx.digest
