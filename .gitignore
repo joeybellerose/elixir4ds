@@ -32,6 +32,5 @@ elixir4ds-*.tar
 npm-debug.log
 /assets/node_modules/
 
-# Ignore releases
-/rel/
+*/overlays/
 
