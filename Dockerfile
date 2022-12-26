@@ -1,12 +1,12 @@
-FROM elixir:1.14.2
+FROM elixir:1.14.2-alpine
 
-#### If needed for native dependencie
+#### If needed for native dependencies
+RUN apk update && apk add inotify-tools
+RUN apk add --no-cache make gcc libc-dev
 
+ENV CC=gcc
+ENV MAKE=cmake
 #####
-RUN apt-get update && \
-    apt-get install -y inotify-tools && \
-    apt-get install -y nodejs && \
-    curl -L https://npmjs.org/install.sh | sh
 
 RUN mix local.hex --force \
   && mix local.rebar --force
