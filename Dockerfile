@@ -1,19 +1,17 @@
 FROM elixir:1.14.2-alpine
 
+COPY . .
+
 #### If needed for native dependencies
 RUN apk update && apk add inotify-tools
 RUN apk add --no-cache make gcc libc-dev
 
-ENV CC=gcc
-ENV MAKE=cmake
+# ENV CC=gcc
+# ENV MAKE=cmake
 #####
 
 RUN mix local.hex --force \
   && mix local.rebar --force
-
-WORKDIR /app
-
-ADD ./ /app/
 
 EXPOSE 4000
 
