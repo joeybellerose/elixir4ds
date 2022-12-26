@@ -88,4 +88,4 @@ COPY --from=builder --chown=nobody:root /app/_build/${MIX_ENV}/rel/elixir4ds ./
 
 USER nobody
 
-CMD ["/app/bin/server"]
+CMD ["/app/_build/prod/rel/elixir4ds"]
