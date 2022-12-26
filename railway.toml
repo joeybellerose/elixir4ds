@@ -1,6 +1,5 @@
 [build]
-RAILWAY_DOCKERFILE_PATH = "Dockerfile"
-builder = "dockerfile"
+builder = "Dockerfile"
 
 [deploy]
 restartPolicyType = "ON_FAILURE"
