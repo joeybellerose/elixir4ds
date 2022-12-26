@@ -1,11 +1,12 @@
-FROM elixir:1.14.2-alpine
+FROM elixir:1.14.2
 
-#### If needed for native dependencies
-RUN apk add --no-cache make gcc libc-dev
+#### If needed for native dependencie
 
-ENV CC=gcc
-ENV MAKE=cmake
 #####
+RUN apt-get update && \
+    apt-get install -y inotify-tools && \
+    apt-get install -y nodejs && \
+    curl -L https://npmjs.org/install.sh | sh
 
 RUN mix local.hex --force \
   && mix local.rebar --force
