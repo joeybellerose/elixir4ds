@@ -48,7 +48,7 @@ defmodule Elixir4ds.MixProject do
       {:gettext, "~> 0.20"},
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
-      # {:petal_components, "~> 0.19"},
+      {:petal_components, "~> 0.19"},
       {:httpoison, "~> 1.8"}
     ]
   end
