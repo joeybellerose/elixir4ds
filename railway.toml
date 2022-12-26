@@ -1,6 +1,6 @@
 [build]
 builder = "dockerfile"
-RAILWAY_DOCKERFILE_PATH = Dockerfile
+RAILWAY_DOCKERFILE_PATH = "Dockerfile"
 
 [deploy]
 restartPolicyType = "ON_FAILURE"
