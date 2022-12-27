@@ -30,6 +30,7 @@ ARG TEST="test"
 RUN git clone https://github.com/joeybellerose/elixir4ds.git
 
 RUN cd elixir4ds
+RUN echo "$PWD"
 
 # install hex + rebar
 RUN mix local.hex --force && \
