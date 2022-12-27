@@ -38,7 +38,7 @@ RUN mix local.hex --force && \
 
 # set build ENV
 ENV MIX_ENV="prod"
-# ENV PHX_SERVER=true
+ENV PHX_SERVER=true
 
 # install mix dependencies
 # COPY mix.exs mix.lock ./
