@@ -94,4 +94,4 @@ RUN mix phx.gen.release
 
 # USER nobody
 
-CMD ["/elixir4ds/_build/prod/rel/elixir4ds/"]
+CMD ["/elixir4ds/_build/dev/rel/elixir4ds/bin/server"]
