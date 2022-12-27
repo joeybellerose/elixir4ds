@@ -65,7 +65,7 @@ RUN mix compile
 # COPY config/runtime.exs config/
 
 # COPY rel rel
-RUN mix release
+RUN mix phx.gen.release
 
 # start a new build stage so that the final image will only contain
 # the compiled release and other runtime necessities
@@ -92,4 +92,4 @@ RUN mix release
 
 # USER nobody
 
-CMD ["_build/dev/rel/elixir4ds/bin/server"]
+CMD ["/elixir4ds/bin/server"]
