@@ -9,7 +9,7 @@ defmodule Elixir4ds.Notion.Block do
 
   def request_blocks(block_id) do
     # System.get_env("NOTION_API_SECRET")
-    notion_api_key = System.get_env("NOTION_API_SECRET")
+    notion_api_key = System.get_env("NOTION_API_KEY")
 
     HTTPoison.get!(
       "https://api.notion.com/v1/blocks/#{block_id}/children?page_size=100",

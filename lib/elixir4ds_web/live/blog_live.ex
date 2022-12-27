@@ -12,7 +12,7 @@ defmodule Elixir4dsWeb.BlogLive do
     # posts = Database.get_all_posts() |> Enum.reverse() |> dbg()
 
     if connected?(socket) do
-      posts = Database.get_all_posts() |> dbg()
+      posts = Database.get_all_posts()
       socket = socket |> assign(posts: posts)
       {:ok, socket}
     else
