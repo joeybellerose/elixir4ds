@@ -38,7 +38,7 @@ RUN mix local.hex --force && \
 
 # set build ENV
 ENV MIX_ENV="prod"
-ENV PHX_SERVER=true
+# ENV PHX_SERVER=true
 
 # install mix dependencies
 # COPY mix.exs mix.lock ./
@@ -67,7 +67,7 @@ RUN mix compile
 # COPY config/runtime.exs config/
 
 # COPY rel rel
-RUN mix phx.gen.release
+RUN mix release
 
 # start a new build stage so that the final image will only contain
 # the compiled release and other runtime necessities
@@ -94,4 +94,4 @@ RUN mix phx.gen.release
 
 # USER nobody
 
-CMD ["/elixir4ds/_build/dev/rel/elixir4ds/bin/server"]
+CMD ["/elixir4ds/_build/prod/rel/elixir4ds/"]
