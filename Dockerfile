@@ -29,7 +29,7 @@ RUN apt-get update -y && apt-get install -y build-essential git \
 ARG TEST="test"
 RUN git clone https://github.com/joeybellerose/elixir4ds.git
 
-RUN cd elixir4ds
+WORKDIR "/elixir4ds"
 RUN echo "$PWD"
 
 # install hex + rebar
