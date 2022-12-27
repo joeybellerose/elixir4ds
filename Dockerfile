@@ -26,7 +26,7 @@ RUN apt-get update -y && apt-get install -y build-essential git \
 
 # prepare build dir
 # WORKDIR /app
-ARG TEST="test"
+ARG TEST="something"
 RUN git clone https://github.com/joeybellerose/elixir4ds.git
 
 WORKDIR "/elixir4ds"
