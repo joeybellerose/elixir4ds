@@ -1,9 +1,9 @@
 defmodule Elixir4ds.Notion.Database do
   def get_all_posts() do
     # System.get_env("NOTION_API_SECRET")
-    notion_api_key = "secret_bUhdEi5jZatllVhqB4vZsLrJ4LiP9AhaXhrjdCC7owv"
+    notion_api_key = System.get_env("NOTION_API_SECRET")
     # System.get_env("NOTION_BLOG_DB_ID")
-    blog_db_id = "045e80e2957c414c8bee1e6413af62df"
+    blog_db_id = System.get_env("NOTION_BLOG_DB_ID")
 
     query_db_list_all()
     |> make_request(blog_db_id, notion_api_key)
@@ -12,9 +12,9 @@ defmodule Elixir4ds.Notion.Database do
 
   def get_individual_post(slug) do
     # System.get_env("NOTION_API_SECRET")
-    notion_api_key = "secret_bUhdEi5jZatllVhqB4vZsLrJ4LiP9AhaXhrjdCC7owv"
+    notion_api_key = System.get_env("NOTION_API_SECRET")
     # System.get_env("NOTION_BLOG_DB_ID")
-    blog_db_id = "045e80e2957c414c8bee1e6413af62df"
+    blog_db_id = System.get_env("NOTION_BLOG_DB_ID")
 
     query = query_single_page_from_slug(slug)
 
