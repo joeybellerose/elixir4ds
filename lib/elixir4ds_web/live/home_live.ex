@@ -98,24 +98,41 @@ defmodule Elixir4dsWeb.HomeLive do
           </a>
         </div>
       </div>
+
       <div class="flex flex-col">
         <h2 class="text-orange-700 text-center text-3xl font-bold m-4">
           Techology
         </h2>
         <div class="grid grid-cols-4 place-items-center">
-          <.button class="bg-orange-500 w-24 hover:text-orange-500">Elixir</.button>
-          <.button class="bg-orange-500 w-24 hover:text-orange-500">Phoenix</.button>
-          <.button class="bg-orange-500 w-24 hover:text-orange-500">Livebook</.button>
-          <.button class="bg-orange-500 w-24 hover:text-orange-500">Fly.io</.button>
+          <a href="https://elixir-lang.org" target="_blank">
+            <.button class="bg-orange-500 w-24 hover:text-orange-500">Elixir</.button>
+          </a>
+          <a href="https://www.phoenixframework.org" target="_blank">
+            <.button class="bg-orange-500 w-24 hover:text-orange-500">Phoenix</.button>
+          </a>
+          <a href="https://livebook.dev" target="_blank">
+            <.button class="bg-orange-500 w-24 hover:text-orange-500">Livebook</.button>
+          </a>
+          <a href="https://fly.io" target="_blank">
+            <.button class="bg-orange-500 w-24 hover:text-orange-500">Fly.io</.button>
+          </a>
         </div>
         <h2 class="text-center text-indigo-500 text-3xl font-bold m-4">
           Data Science Packages
         </h2>
         <div class="grid grid-cols-4 place-items-center mb-4">
-          <.button class="bg-indigo-400 w-24 hover:text-indigo-400">Nx</.button>
-          <.button class="bg-indigo-400 w-24 hover:text-indigo-400">Explorer</.button>
-          <.button class="bg-indigo-400 w-24 hover:text-indigo-400">VegaLite</.button>
-          <.button class="bg-indigo-400 w-24 hover:text-indigo-400">Kino</.button>
+          <a href="https://hexdocs.pm/nx/Nx.html" target="_blank">
+            <.button class="bg-indigo-500 w-24 hover:text-indigo-500">Nx</.button>
+          </a>
+          <a href="https://hexdocs.pm/explorer/Explorer.html" target="_blank">
+            <.button class="bg-indigo-500 w-24 hover:text-indigo-500">Explorer</.button>
+          </a>
+          <a href="https://hexdocs.pm/vega_lite/VegaLite.html" target="_blank">
+            <.button class="bg-indigo-500 w-24 hover:text-indigo-500">VegaLite</.button>
+          </a>
+          <a href="https://hexdocs.pm/kino/Kino.html" target="_blank">
+            <.button class="bg-indigo-500 w-24 hover:text-indigo-500">Kino</.button>
+          </a>
         </div>
       </div>
     </div>

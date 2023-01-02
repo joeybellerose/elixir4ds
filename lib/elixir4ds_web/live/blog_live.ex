@@ -25,6 +25,12 @@ defmodule Elixir4dsWeb.BlogLive do
 
   def render(assigns) do
     ~H"""
+    <%!-- <.focus_wrap id="my-modal" class="bg-white">
+      <div id="modal-content">
+
+      </div>
+    </.focus_wrap> --%>
+
     <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
       <%= for post <- @posts do %>
         <Card.card class="hover:drop-shadow-xl">
