@@ -46,6 +46,7 @@ config :elixir4ds, Elixir4dsWeb.Endpoint,
 config :elixir4ds, Elixir4dsWeb.Endpoint,
   live_reload: [
     patterns: [
+      ~r"posts/*/.*(md)$",
       ~r"priv/static/.*(js|css|png|jpeg|jpg|gif|svg)$",
       ~r"priv/gettext/.*(po)$",
       ~r"lib/elixir4ds_web/(live|views)/.*(ex)$",

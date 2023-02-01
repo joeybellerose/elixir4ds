@@ -49,7 +49,11 @@ defmodule Elixir4ds.MixProject do
       {:jason, "~> 1.4"},
       {:plug_cowboy, "~> 2.5"},
       {:petal_components, "~> 0.19"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:nimble_publisher, "~> 0.1.3"},
+      {:makeup, ">=0.0.0"},
+      {:makeup_elixir, ">= 0.0.0"},
+      {:makeup_erlang, ">= 0.0.0"}
     ]
   end
 

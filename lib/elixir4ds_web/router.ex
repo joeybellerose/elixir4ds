@@ -22,7 +22,7 @@ defmodule Elixir4dsWeb.Router do
     live "/", HomeLive
     live "/test", TestLive
     live "/blog", BlogLive
-    live "/blog/:slug", PostLive
+    live "/blog/:id", PostLive
   end
 
   # Other scopes may use custom stacks.

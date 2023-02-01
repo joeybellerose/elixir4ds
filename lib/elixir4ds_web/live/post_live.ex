@@ -2,13 +2,17 @@ defmodule Elixir4dsWeb.PostLive do
   use Elixir4dsWeb, :live_view
 
   # alias Elixir4ds.Notion.Block
-  alias Elixir4ds.Notion.Database
+  # alias Elixir4ds.Notion.Database
   # alias PetalComponents.Typography
 
-  def mount(%{"slug" => slug}, _session, socket) do
-    # Get Page ID
+  alias Elixir4ds.Blog
 
-    page_id = Database.get_individual_post(slug)
+  def mount(%{"id" => id}, _session, socket) do
+    # Get Page ID
+    id |> dbg
+
+    post = Blog.get_post_by_id!(id)
+    # page_id = Database.get_individual_post(slug)
 
     # "7a7bf180-6810-4009-b509-e51f851c496d"
     # blocks =
@@ -17,8 +21,8 @@ defmodule Elixir4dsWeb.PostLive do
     #     _ -> []
     #   end
 
-    socket = socket |> assign(page_id: page_id)
-    {:ok, socket}
+    # socket = socket |> assign(page_id: page_id)
+    {:ok, assign(socket, post: post)}
   end
 
   def mount(_params, _session, socket) do
@@ -27,7 +31,11 @@ defmodule Elixir4dsWeb.PostLive do
 
   def render(assigns) do
     ~H"""
-    <div class="amplenote-embed" data-note-token={@page_id}>
+    <div class="container mx-auto">
+      <h1><%= @post.title %></h1>
+      <p><%= raw(@post.body) %></p>
+    </div>
+    <%!-- <div class="amplenote-embed" data-note-token={@page_id}>
       <iframe
         id="resize"
         width="100%"
@@ -35,7 +43,7 @@ defmodule Elixir4dsWeb.PostLive do
         src={"https://public.amplenote.com/embed/#{@page_id}"}
       >
       </iframe>
-    </div>
+    </div> --%>
     """
   end
 end

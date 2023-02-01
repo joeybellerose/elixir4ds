@@ -7,9 +7,9 @@ defmodule Elixir4dsWeb.HomeLive do
 
   def render(assigns) do
     ~H"""
-    <div class="flex flex-col">
+    <div class="flex flex-col bg-zinc-800">
       <div class="h-40 px-8 grid grid-cols-1 place-content-center bg-gradient-to-r from-indigo-500 to-fuchsia-500">
-        <h1 class="text-5xl font-extrabold text-center">Elixir For Data Science</h1>
+        <h1 class="text-5xl font-extrabold text-center text-zinc-800">Elixir For Data Science</h1>
 
         <h2 class="text-xl font-semibold text-white text-center pt-2">
           Build And Share Analytical Applications With Elixir
@@ -20,7 +20,7 @@ defmodule Elixir4dsWeb.HomeLive do
         <h2 class="text-center pt-2 mb-2 text-yellow-500 text-3xl font-bold m-4">
           Portfolio
         </h2>
-        <div class="grid sm:grid-cols-2 md:grid-cols-4 gap-2 place-content-center items-center">
+        <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-2 place-content-center items-center">
           <a href="https://book.elixir4datascience.com" target="_blank">
             <.button class="flex border-2 hover:bg-zinc-800 bg-amber-400 border-amber-400 text-zinc-800  hover:text-amber-400 w-36 text-xl">
               <svg
@@ -40,7 +40,7 @@ defmodule Elixir4dsWeb.HomeLive do
               Book
             </.button>
           </a>
-          <a href="blog" target="_blank">
+          <a href="https://blog.elixir4datascience.com" target="_blank">
             <.button class="flex border-2 hover:bg-zinc-800 bg-amber-400 border-amber-400 text-zinc-800  hover:text-amber-400 w-36 text-xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -59,7 +59,7 @@ defmodule Elixir4dsWeb.HomeLive do
               Blog
             </.button>
           </a>
-          <a href="https://github.com/joeybellerose/elixir4ds" target="_blank">
+          <%!-- <a href="https://github.com/joeybellerose/elixir4ds" target="_blank">
             <.button class="flex border-2 hover:bg-zinc-800 bg-amber-400 border-amber-400 text-zinc-800  hover:text-amber-400 w-36 text-xl">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -77,7 +77,7 @@ defmodule Elixir4dsWeb.HomeLive do
               </svg>
               Github
             </.button>
-          </a>
+          </a> --%>
           <a href="https://www.youtube.com/@titantech2271" target="_blank">
             <.button class="flex border-2 hover:bg-zinc-800 bg-amber-400 border-amber-400 text-zinc-800  hover:text-amber-400 w-36 text-xl">
               <svg
